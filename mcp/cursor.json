@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "fokals": {
+      "url": "https://mcp.fokals.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${env:FOKALS_API_KEY}"
+      }
+    }
+  }
+}

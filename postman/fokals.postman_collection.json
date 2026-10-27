@@ -1,0 +1,604 @@
+{
+  "info": {
+    "name": "Fokals API",
+    "description": "Company signals by API: the technologies companies run, open roles, buying topics, announcements and website changes. Make a key at https://www.fokals.com/account and set it as the collection variable apiKey. Reference: https://www.fokals.com/docs/connect#reference",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.fokals.com/v1"
+    },
+    {
+      "key": "apiKey",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Balance and prices",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/account",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "account"
+          ]
+        },
+        "description": "The balance of the account the key belongs to, when its funds expire, what it has spent this month and what each call costs. Free. The cheapest way to learn whether a key is good."
+      }
+    },
+    {
+      "name": "Find companies by signal",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/find_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "find_companies"
+          ]
+        },
+        "description": "Finds companies by what they show: a technology they run, a buying topic they show signs of, whether they are hiring, an announcement they made lately (funding, a launch, a partnership, a leadership change), their industry, business model or country, and how lately their website changed. The companies whose website changed most lately come first. Each company comes with its website, industry, technologies, open roles and buying topics. Give at least one filter; count_companies says how many match, free, before this is called. At most 100 companies a call. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned; $0.08 ($0.05 past 10,000 in a calendar month) for each company when a buying topic is among the filters, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"technology\": \"Shopify\",\n  \"hiring\": true,\n  \"country\": \"US\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Count companies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/count_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "count_companies"
+          ]
+        },
+        "description": "Counts the companies that match a set of filters, and says what it would cost to get them. Free. Takes the same filters as find_companies. Use it before find_companies, so the person knows the size and the price of what they are asking for.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"technology\": \"Shopify\",\n  \"hiring\": true,\n  \"country\": \"US\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Enrich a list of companies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/enrich_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "enrich_companies"
+          ]
+        },
+        "description": "Takes the person's own list of companies, by website address or name, and returns what is held on each: industry and business model, the technologies its website runs, open roles and hiring in the last 30 days, buying topics it shows signs of, and when its website last changed. Use it to fill in, score or rank a list of accounts, leads or customers. A website address finds a company more surely than a name. At most 100 companies a call; send a longer list in parts. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companies\": [\n    \"acme.com\",\n    \"globex.com\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Company profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/company_profile",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "company_profile"
+          ]
+        },
+        "description": "One company in depth: what it sells and to whom, every technology its website runs and since when, its open roles by function, seniority and country with the latest postings, the buying topics it shows signs of with the signals behind them, its latest announcements by type, the latest changes on its website, and how its traffic ranks. Use it to research an account before a call, to explain why a company is on a list, or to compare companies. Costs $0.10 ($0.06 past 10,000 in a calendar month) for the profile, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree. For more than 50,000 profiles a month a data licence costs less.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company\": \"acme.com\",\n  \"sections\": [\n    \"technology\",\n    \"hiring\",\n    \"buying_topics\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "What changed at my companies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/company_changes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "company_changes"
+          ]
+        },
+        "description": "What is new at the person's own companies since a date: changes on each website (a technology added or dropped, a new market, language, currency, page or app) and the company's announcements by type (funding, launches, partnerships, leadership changes, expansion). Use it for a weekly check on a list of accounts, or to find a timely reason to get in touch. A company with nothing new costs nothing and is named as such. At most 100 companies a call. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companies\": [\n    \"acme.com\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Search job postings",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/search_job_postings",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "search_job_postings"
+          ]
+        },
+        "description": "Searches the open job postings of companies: by words in the title, function, seniority, country, remote or on site, a technology the posting asks for, the hiring company's industry, pay, and how lately the posting appeared. The latest postings come first, each with its company, function, seniority, pay where stated, and link. Use it to find who is hiring for a role, to spot a team being built, or to check hiring at a list of accounts. Give at least one filter. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree. A posting itself is not charged: the price is for each company the postings belong to.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"data engineer\",\n  \"technology\": \"Snowflake\",\n  \"country\": \"GB\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Similar companies and competitors",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/similar_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "similar_companies"
+          ]
+        },
+        "description": "Finds companies like a given one, the most alike first, each with what it shares with the one given: the labels in common (business model, offering, customer size, pricing, growth stage, home country) and the technologies in common. Ask for lookalikes to grow a list from a best customer, or for competitors to see who sells the same kind of thing to the same kind of customer. The company given is not charged. At most 100 companies a call. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company\": \"acme.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Customers, partners, integrations and investors",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/company_connections",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "company_connections"
+          ]
+        },
+        "description": "The other companies a company's own website names, and as what: its customers, partners, integrations and investors, each by website and, where held, by name. And the reverse: the companies whose websites name this one, and as what, which shows whose customer or partner it is. Taken from links a page puts under a heading of its own (\"Trusted by\", \"Our partners\", \"Integrations\", \"Backed by\") and seen in the last 60 days; a company whose pages name nobody that way has none. Only the company asked about is charged. Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company\": \"acme.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Which company is meant",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/identify_company",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "identify_company"
+          ]
+        },
+        "description": "Lists the companies a name or a website address could mean, the surest first, each with its website, country, industry and whether it has been read. Free. Use it when a name is ambiguous or a paid tool said a company is not held, then pass the id of the right one to the other tools. A company that is not held at all can be asked for with request_company.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"company\": \"Acme\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Market breakdown",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/market_breakdown",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "market_breakdown"
+          ]
+        },
+        "description": "Answers a question about a market as a whole: how the companies that match a set of filters divide by one attribute (industry, business_model, country, growth_stage, customer_size, price_tier, sales_motion, pricing_model, region, sic, technology, buying_topic), with the number of companies under each value and the total. Takes the same filters as find_companies, or none for every company held. Use it to size a segment, to see which technologies or buying topics lead in an industry, or which countries a kind of company is in. It returns counts, not companies. Costs $0.05 a question, whatever its size, taken from the person's prepaid balance; a question nothing matches costs nothing.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"technology\": \"Klaviyo\",\n  \"by\": \"industry\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "List filter values",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/list_filters",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "list_filters"
+          ]
+        },
+        "description": "Lists the values find_companies and count_companies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the head office's country where it is known, otherwise the main market the company's website serves), and the types of announcement. Free.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kind\": \"buying_topics\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Ask for a company to be added",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/request_company",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "request_company"
+          ]
+        },
+        "description": "Asks Fokals to add a company it does not hold yet, by the company's own website address. Free. The website is checked and, if it is a company website in the languages Fokals covers, read: that can take a few days, after which the other tools return it. The answer says where the company stands: held already, asked for, or outside what is covered.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Report a problem",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/report_problem",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "report_problem"
+          ]
+        },
+        "description": "Sends a report to the people who run Fokals: data that is wrong or missing for a company, a tool that did not work, or an idea. Free. Use it when the person says an answer was wrong, and tell them it was sent.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Enrich a long list into a file",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/enrich_to_file",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "enrich_to_file"
+          ]
+        },
+        "description": "Enriches a long list of the person's own companies and hands the result over as a spreadsheet file (CSV) instead of an answer: one line a company, with its industry, business model, every technology, open roles, buying topics and dates. Up to 10,000 companies a call. The person downloads the file signed in on their account page, for 7 days. Use enrich_companies instead when the list fits in an answer (100 companies). Costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company returned, taken from the person's prepaid balance; a company that is not held costs nothing. A company this account has paid for is free to it again for 30 days in an answer of the same kind or a cheaper one: a profile covers the company's list rows, a list row does not cover a profile. A call that costs more than $0.25 returns its price instead of running: tell the person the price and call again with max_usd once they agree.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Watch companies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/watch_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "watch_companies"
+          ]
+        },
+        "description": "Watches a list of the person's own companies and emails them what is new: website changes and announcements, every week or every day. Setting a watch is free. Each digest then costs $0.04 ($0.02 past 10,000 in a calendar month, $0.01 past 100,000) for each company with something new, and nothing when nothing is new, taken from the prepaid balance without asking again and outside the monthly limit: say so, and set a watch only when the person has agreed to that. Up to 1,000 companies an account.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companies\": [\n    \"acme.com\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Stop watching companies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/unwatch_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "unwatch_companies"
+          ]
+        },
+        "description": "Stops watching the companies named, or all of them, so no more digests are sent or charged for them. Free.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"companies\": [\n    \"acme.com\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Watched companies and the latest digest",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/watched_companies",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "watched_companies"
+          ]
+        },
+        "description": "Lists the companies the account watches, how often it is sent what is new, and the latest digest with what it held and cost. Free: a digest was paid for when it was sent.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Balance and prices",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/account_balance",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "account_balance"
+          ]
+        },
+        "description": "The person's prepaid balance and the dates it expires, what they have spent this month and on which tools, their monthly spending limit, the prices, and where to add funds. Free.",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

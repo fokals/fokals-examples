@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "fokals": {
+      "type": "streamableHttp",
+      "url": "https://mcp.fokals.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_KEY"
+      },
+      "disabled": false
+    }
+  }
+}
