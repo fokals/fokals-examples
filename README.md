@@ -31,7 +31,7 @@ https://mcp.fokals.com/mcp
 | Claude Code | `claude mcp add --transport http fokals https://mcp.fokals.com/mcp --header "Authorization: Bearer $FOKALS_API_KEY"` |
 | Cursor | Copy [mcp/cursor.json](mcp/cursor.json) into `.cursor/mcp.json`. |
 | VS Code | Copy [mcp/vscode.json](mcp/vscode.json) into `.vscode/mcp.json`. |
-| Cline | Add [mcp/cline.json](mcp/cline.json) to `cline_mcp_settings.json`, or ask Cline to install it from [llms-install.md](llms-install.md). |
+| Cline | Add [mcp/cline.json](mcp/cline.json) to `cline_mcp_settings.json` (or ask Cline to install it from [llms-install.md](llms-install.md)), then press **Authenticate** on fokals under MCP Servers and sign in. |
 
 Things to ask once it is connected are in [prompts.md](prompts.md).
 
